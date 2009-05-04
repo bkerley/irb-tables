@@ -6,7 +6,17 @@ class IrbTablesTest < Test::Unit::TestCase
   end
   context 'with an array of activerecord objects' do
     setup do
-      a = Mug.all
+      @mugs = Mug.all
+      @out = @mugs.inspect
+      @lines = @out.split("\n")
+    end
+    should "output a row of headers first" do
+      Mug.columns.each do |c|
+        assert @lines[0].include?(c.name)
+      end
+    end
+    should "output a row of dashes next" do
+      assert @lines[1] =~ /^-+$/
     end
   end
 end
